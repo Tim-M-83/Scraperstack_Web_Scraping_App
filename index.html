@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <title>Scrapestack GUI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <button id="nav-dashboard">Dashboard</button>
+        <button id="nav-settings">Settings</button>
+        <button id="close-app-button" style="float: right; background-color: #dc3545;">Close App</button> <!-- Added Close button -->
+    </nav>
+
+    <main>
+        <!-- Dashboard View -->
+        <section id="dashboard-view" class="view active-view">
+            <h1>Dashboard</h1>
+
+            <div class="explanation dashboard-explanation">
+                <p>
+                    Welcome! Use this tool to scrape web pages via the Scrapestack API.
+                    <strong>Important:</strong> You must first enter and save your Scrapestack API key on the <button id="link-to-settings" class="inline-link">Settings</button> page.
+                </p>
+                <p>
+                    Need an API key? <a href="http://scrapestack.com?utm_source=FirstPromoter&utm_medium=Affiliate&fpr=tim75" id="scrapestack-link-dashboard">Sign up here for a free key.</a>
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="url-input">URL to Scrape:</label>
+                <input type="url" id="url-input" placeholder="https://example.com" required>
+            </div>
+
+            <fieldset>
+                <legend>Scrapestack Options</legend>
+                <div class="form-group">
+                    <input type="checkbox" id="render-js-checkbox">
+                    <label for="render-js-checkbox">Render JavaScript (Basic Plan+)</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="premium-proxy-checkbox">
+                    <label for="premium-proxy-checkbox">Use Premium Proxies (Basic Plan+, 25 requests/call)</label>
+                </div>
+                <div class="form-group">
+                    <label for="proxy-location-input">Proxy Location (2-letter code, Basic Plan+):</label>
+                    <input type="text" id="proxy-location-input" placeholder="e.g., us, gb, au">
+                </div>
+                 <div class="form-group">
+                    <input type="checkbox" id="keep-headers-checkbox">
+                    <label for="keep-headers-checkbox">Keep & Return Headers</label>
+                </div>
+            </fieldset>
+
+            <button id="scrape-button">Scrape</button>
+
+            <h2>Result:</h2>
+            <textarea id="result-output" rows="15" readonly></textarea>
+            <button id="export-csv-button" disabled>Export as CSV</button>
+            <p id="status-message"></p>
+
+            <!-- Post-Scraping AI Options -->
+            <div id="post-scrape-options" class="post-scrape-options-container" style="display: none;">
+                <h3>AI Actions on Scraped Content</h3>
+                <div class="language-selector">
+                    <label for="language-select">Output Language:</label>
+                    <select id="language-select">
+                        <option value="EN">English</option>
+                        <option value="DE">German</option>
+                        <option value="FR">French</option>
+                        <option value="ES">Spanish</option>
+                    </select>
+                </div>
+                
+                <div class="ai-option">
+                    <button id="analyze-gpt4-button">🧠 Analyze with GPT-4</button>
+                    <div id="analyze-gpt4-result" class="ai-result"></div>
+                    <div class="ai-action-buttons">
+                        <button id="copy-analyze-button">📋 Copy</button>
+                        <button id="save-analyze-button">💾 Save</button>
+                    </div>
+                </div>
+                
+                <div class="ai-option">
+                    <button id="generate-caption-button">✍️ Generate Social Media Caption</button>
+                    <div id="generate-caption-result" class="ai-result"></div>
+                    <div class="ai-action-buttons">
+                        <button id="copy-caption-button">📋 Copy</button>
+                        <button id="save-caption-button">💾 Save</button>
+                    </div>
+                </div>
+                
+                <div class="ai-option">
+                    <button id="generate-metadata-button">🗂️ Generate Metadata (Title, Desc, Keywords)</button>
+                    <div id="generate-metadata-result" class="ai-result"></div>
+                    <div class="ai-action-buttons">
+                        <button id="copy-metadata-button">📋 Copy</button>
+                        <button id="save-metadata-button">💾 Save</button>
+                    </div>
+                </div>
+                
+                <div class="ai-option">
+                    <button id="generate-faq-button">🧾 Generate FAQ Schema</button>
+                    <pre id="faq-result" class="ai-result"></pre>
+                    <div class="ai-action-buttons">
+                        <button id="copy-faq-button">📋 Copy Schema</button>
+                        <button id="save-faq-button">💾 Save as JSON</button>
+                    </div>
+                </div>
+                
+                <div class="ai-option">
+                    <button id="generate-title-meta-button">🧠 Generate Title + Meta Suggestions</button>
+                    <div id="title-meta-result" class="ai-result"></div>
+                    <div class="ai-action-buttons">
+                        <button id="copy-title-meta-button">📋 Copy</button>
+                        <button id="save-title-meta-button">💾 Save</button>
+                    </div>
+                </div>
+                
+                <div class="ai-option">
+                    <button id="estimate-seo-score-button">📊 Estimate SEO Score</button>
+                    <div id="seo-score-result" class="ai-result"></div>
+                    <div class="ai-action-buttons">
+                        <button id="copy-seo-score-button">📋 Copy</button>
+                        <button id="save-seo-score-button">💾 Save</button>
+                    </div>
+                </div>
+
+                <div class="ai-option">
+                    <button id="custom-seo-strategy-button">🔍 Custom SEO Strategy</button>
+                    <div id="custom-seo-strategy-result" class="ai-result"></div>
+                    <div class="ai-action-buttons">
+                        <button id="copy-custom-seo-strategy-button">📋 Copy</button>
+                        <button id="save-custom-seo-strategy-button">💾 Save</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings View -->
+        <section id="settings-view" class="view">
+            <h1>Settings</h1>
+
+            <div class="explanation">
+                <p>
+                    To use this application, you need an API key from Scrapestack.
+                    <a href="http://scrapestack.com?utm_source=FirstPromoter&utm_medium=Affiliate&fpr=tim75" id="scrapestack-link">Sign up here to get your free API key.</a>
+                </p>
+                <p>
+                    This application allows you to scrape web pages using the Scrapestack service.
+                    Enter the URL you want to scrape on the Dashboard, select any desired options (like JavaScript rendering or proxy settings), and click "Scrape".
+                    The results (HTML content or error messages) will be displayed. You can then export the raw HTML content to a CSV file using the "Export as CSV" button.
+                </p>
+                <p>
+                    Enter your Scrapestack API key below and click "Save API Key". The key will be stored securely on your local machine.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="api-key-input">Scrapestack API Key:</label>
+                <input type="password" id="api-key-input" placeholder="Enter your API Key">
+                 <button id="toggle-api-key-visibility">Show</button>
+            </div>
+            <button id="save-api-key-button">Save API Key</button>
+            <p id="settings-status-message"></p>
+
+            <hr style="margin: 20px 0;"> <!-- Separator -->
+
+             <div class="explanation">
+                 <p>
+                     An OpenAI API key is required to use the AI features (Analyze, Caption, Metadata) on the Dashboard after scraping. These features use the GPT-4 model.
+                 </p>
+                 <p>
+                     You can get your API key from the OpenAI platform:
+                     <a href="https://platform.openai.com/api-keys" id="openai-api-keys-link">Get your OpenAI API Key here.</a>
+                 </p>
+             </div>
+
+            <div class="form-group">
+                 <label for="openai-api-key-input">OpenAI API Key:</label>
+                 <input type="password" id="openai-api-key-input" placeholder="Enter your OpenAI API Key (e.g., sk-...)">
+                 <button id="toggle-openai-api-key-visibility">Show</button>
+                 <button id="test-openai-key-button">Test API Key</button>
+            </div>
+             <button id="save-openai-api-key-button">Save OpenAI API Key</button>
+             <p id="openai-key-status-message"></p>
+
+        </section>
+    </main>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+
+    <footer>
+        <p>&copy; 2025 Copyright - All Rights Reserved - License-> <a href="https://github.com/Tim-M-83/Scraperstack_Web_Scraping_App" target="_blank" rel="noopener noreferrer" id="github-link">GitHub</a>! Visit and subscribe on <a href="https://www.youtube.com/@Digital-Insight" target="_blank" rel="noopener noreferrer" id="youtube-link">YouTube</a>! | Need SEO or Digital Marketing? <a href="https://go.fiverr.com/visit/?bta=1112748&brand=fiverrmarketplace&landingPage=https%253A%252F%252Fwww.fiverr.com%252Fs%252FQ7yE3Ge" target="_blank" rel="noopener noreferrer" id="youtube-link">Hire Me</a></p>
+    </footer>
+</body>
+</html>
