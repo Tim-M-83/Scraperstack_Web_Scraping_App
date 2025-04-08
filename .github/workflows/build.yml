@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
+      fail-fast: false
 
     steps:
       - name: Checkout Code
@@ -19,22 +20,34 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Build app for ${{ matrix.os }}
         run: |
-          if [ "${{ matrix.os }}" == "macos-latest" ]; then
+          npm install
+          npm install -g electron-builder@latest
+
+      - name: Build app
+        shell: bash
+        run: |
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
             npm run build:mac
           else
             npm run build:win
           fi
 
-      - name: Upload Artifacts
+      - name: Upload Mac Artifacts
+        if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v3
         with:
-          name: build-${{ matrix.os }}
-          path: |
-            dist/*.dmg
-            dist/*.exe
+          name: mac-dmg
+          path: dist/*.dmg
+          if-no-files-found: error
+
+      - name: Upload Windows Artifacts
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: win-exe
+          path: dist/*.exe
+          if-no-files-found: error
