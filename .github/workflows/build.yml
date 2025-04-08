@@ -39,7 +39,7 @@ jobs:
 
       - name: Upload Mac Artifacts
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3.1.3 # Use specific version
+        uses: actions/upload-artifact@v4 # Use latest major version v4
         with:
           name: mac-dmg
           path: dist/*.dmg # Specific path for dmg
@@ -47,7 +47,7 @@ jobs:
 
       - name: Upload Windows Artifacts
         if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v3.1.3 # Use specific version
+        uses: actions/upload-artifact@v4 # Use latest major version v4
         with:
           name: win-exe
           path: dist/*.exe # Specific path for exe
