@@ -44,9 +44,11 @@
     ],
     "mac": {
       "category": "public.app-category.developer-tools",
-      "target": ["dmg"],
+      "target": ["pkg"],
       "icon": "assets/icon.png",
-      "identity": null
+      "identity": null,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
     },
     "win": {
       "target": ["nsis"],

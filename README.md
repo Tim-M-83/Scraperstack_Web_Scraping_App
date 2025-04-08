@@ -1,4 +1,24 @@
-# 🚀 AI Website Competition Analyzer
+# 🚀 Scraperstack Web Scraping App
+
+## macOS Installation Guide
+
+1. Download the `.pkg` installer from GitHub Releases
+2. Double-click to open the installer package
+3. Follow the installation wizard steps
+4. After installation:
+   - If you see a warning, right-click the app and select "Open"
+   - Or go to System Settings > Privacy & Security and click "Open Anyway"
+
+## Windows Installation Guide
+
+1. Download the `.exe` installer from GitHub Releases
+2. Run the installer
+3. If Windows Defender shows a warning:
+   - Click "More info"
+   - Then click "Run anyway"
+
+## Original Description:
+
 
 A powerful Electron.js application that leverages OpenAI's GPT models to analyze competitor websites and provide actionable SEO insights.
 
