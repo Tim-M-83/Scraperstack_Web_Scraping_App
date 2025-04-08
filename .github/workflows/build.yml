@@ -3,7 +3,7 @@ name: Build Electron App
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+  workflow_dispatch:  # Enable manual triggers
 
 jobs:
   build:
@@ -24,37 +24,31 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install -g electron-builder@latest
+        run: npm install
+        # No need to install electron-builder globally if it's a dev dependency
 
       - name: Build app
         shell: bash
         run: |
-          if [ "${{ runner.os }}" == "macOS" ]; then
-            npm run build:mac
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            npm run build:mac # Use correct script name
           else
-            npm run build:win
+            npm run build:win # Use correct script name
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Removed unnecessary env block
 
       - name: Upload Mac Artifacts
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3 # Use v3
         with:
           name: mac-dmg
-          path: |
-            dist/*.dmg
-            dist/*.zip
+          path: dist/*.dmg # Specific path for dmg
           if-no-files-found: error
 
       - name: Upload Windows Artifacts
         if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3 # Use v3
         with:
           name: win-exe
-          path: |
-            dist/*.exe
-            dist/*.msi
+          path: dist/*.exe # Specific path for exe
           if-no-files-found: error
