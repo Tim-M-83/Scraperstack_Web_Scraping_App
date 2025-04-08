@@ -2,12 +2,26 @@
 
 ## macOS Installation Guide
 
-1. Download the `.pkg` installer from GitHub Releases
-2. Double-click to open the installer package
-3. Follow the installation wizard steps
-4. After installation:
-   - If you see a warning, right-click the app and select "Open"
-   - Or go to System Settings > Privacy & Security and click "Open Anyway"
+### Option 1: Using the DMG Installer
+1. Download the `.dmg` file from GitHub Releases
+2. Double-click to mount the disk image
+3. Drag Scraperstack.app to your Applications folder
+4. When opening for the first time:
+   - Right-click the app and select "Open"
+   - Or go to System Settings > Privacy & Security > Click "Open Anyway"
+
+### Option 2: Manual Quarantine Removal (if Option 1 fails)
+1. Open Terminal
+2. Run this command (replace with your username):
+```bash
+xattr -cr /Applications/Scraperstack.app
+```
+3. Try opening the app again
+
+### Option 3: Completely Disable Gatekeeper (not recommended)
+```bash
+sudo spctl --master-disable
+```
 
 ## Windows Installation Guide
 

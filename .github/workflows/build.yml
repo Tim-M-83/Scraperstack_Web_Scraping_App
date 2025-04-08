@@ -42,8 +42,8 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: mac-pkg
-          path: dist/*.pkg
+          name: mac-dmg
+          path: dist/*.dmg
           if-no-files-found: error
 
       - name: Upload Windows Artifacts
