@@ -1,7 +1,7 @@
 {
   "name": "scraperstack_web_scraping_app",
   "version": "1.0.0",
-  "description": "",
+  "description": "This application allows you to scrape websites and extract their content and structure, then analyze and improve them using AI.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
