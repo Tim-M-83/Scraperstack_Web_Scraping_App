@@ -3,7 +3,8 @@ name: Build Electron App
 on:
   push:
     branches: [ main ]
-
+  workflow_dispatch:  # Add this line to enable manual triggers
+  
 jobs:
   build:
     runs-on: ${{ matrix.os }}
