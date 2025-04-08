@@ -35,7 +35,8 @@ jobs:
           else
             npm run build:win # Use correct script name
           fi
-        # Removed unnecessary env block
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required by electron-builder in CI
 
       - name: Upload Mac Artifacts
         if: matrix.os == 'macos-latest'
