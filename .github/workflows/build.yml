@@ -31,24 +31,30 @@ jobs:
       - name: Build app
         shell: bash
         run: |
-          if [[ "${{ runner.os }}" == "macOS" ]]; then
-            npm run build:mac
+          if [ "${{ runner.os }}" == "macOS" ]; then
+            npm run electron:build -- --mac
           else
-            npm run build:win
+            npm run electron:build -- --win
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Mac Artifacts
         if: matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: mac-dmg
-          path: dist/*.dmg
+          path: |
+            dist/*.dmg
+            dist/*.zip
           if-no-files-found: error
 
       - name: Upload Windows Artifacts
         if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: win-exe
-          path: dist/*.exe
+          path: |
+            dist/*.exe
+            dist/*.msi
           if-no-files-found: error
