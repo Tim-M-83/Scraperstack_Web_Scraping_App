@@ -3,8 +3,8 @@ name: Build Electron App
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:  # Add this line to enable manual triggers
-  
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -31,18 +31,22 @@ jobs:
       - name: Build app
         shell: bash
         run: |
-          if [[ "${{ runner.os }}" == "macOS" ]]; then
+          if [ "${{ runner.os }}" == "macOS" ]; then
             npm run build:mac
           else
             npm run build:win
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Mac Artifacts
         if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v3
         with:
           name: mac-dmg
-          path: dist/*.dmg
+          path: |
+            dist/*.dmg
+            dist/*.zip
           if-no-files-found: error
 
       - name: Upload Windows Artifacts
@@ -50,5 +54,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: win-exe
-          path: dist/*.exe
+          path: |
+            dist/*.exe
+            dist/*.msi
           if-no-files-found: error
